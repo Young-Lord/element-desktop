@@ -111,7 +111,7 @@ jobs:
 
             - name: Install and configure eSigner CKA
               id: esigner
-              if: inputs.sign
+              if: false
               run: |
                   Set-StrictMode -Version 'Latest'
 
@@ -157,7 +157,7 @@ jobs:
                   yarn build --publish never -w --config electron-builder.json ${{ steps.config.outputs.build-args }}
 
             - name: Check app was signed successfully
-              if: inputs.sign != ''
+              if: false
               run: |
                   . "$env:SIGNTOOL_PATH" verify /pa (get-item ./dist/squirrel-windows*/*.exe)
 
