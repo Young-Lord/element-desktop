@@ -109,12 +109,6 @@ jobs:
             - name: Install Deps
               run: "yarn install --frozen-lockfile"
 
-            - name: Build Natives
-              if: steps.cache.outputs.cache-hit != 'true'
-              run: |
-                  refreshenv
-                  yarn build:native --target ${{ steps.config.outputs.target }}
-
             - name: Install and configure eSigner CKA
               id: esigner
               if: inputs.sign
