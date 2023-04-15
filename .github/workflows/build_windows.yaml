@@ -118,7 +118,8 @@ jobs:
               if: inputs.deploy-mode
               shell: bash
               run: |
-                  rm dist/*.exe
+                  # rm dist/*.exe
+                  ls dist
               env:
                   DIR: ${{ steps.config.outputs.dir }}
 
@@ -128,3 +129,11 @@ jobs:
                   name: ${{ inputs.deploy-mode && 'packages.element.io' || format('win-{0}', inputs.arch) }}
                   path: dist
                   retention-days: 1
+
+            - uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  prerelease: false
+                  automatic_release_tag: latest
+                  files: |
+                      dist/*.exe
