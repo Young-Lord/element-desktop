@@ -109,89 +109,18 @@ jobs:
             - name: Install Deps
               run: "yarn install --frozen-lockfile"
 
-            - name: Install and configure eSigner CKA
-              id: esigner
-              if: false
-              run: |
-                  Set-StrictMode -Version 'Latest'
-
-                  # Download
-                  Invoke-WebRequest -OutFile eSigner_CKA.exe "https://packages.element.io/tools/SSL.COM%20eSigner%20CKA_1.0.4-build-20230221_signed.exe"
-
-                  # Install
-                  New-Item -ItemType Directory -Force -Path "$env:INSTALL_DIR"
-                  ./eSigner_CKA.exe /CURRENTUSER /VERYSILENT /SUPPRESSMSGBOXES /DIR="${{ env.INSTALL_DIR }}" | Out-Null
-
-                  # Disable logger
-                  $LogConfig = Get-Content -Path ${{ env.INSTALL_DIR }}/log4net.config
-                  $LogConfig[0] = '<log4net threshold="OFF">'
-                  $LogConfig | Set-Content -Path ${{ env.INSTALL_DIR }}/log4net.config
-
-                  # Configure
-                  ${{ env.INSTALL_DIR }}/eSignerCKATool.exe config -mode product -user "${{ secrets.ESIGNER_USER_NAME }}" -pass "${{ secrets.ESIGNER_USER_PASSWORD }}" -totp "${{ secrets.ESIGNER_USER_TOTP }}" -key "${{ env.MASTER_KEY_FILE }}" -r
-                  ${{ env.INSTALL_DIR }}/eSignerCKATool.exe unload
-                  ${{ env.INSTALL_DIR }}/eSignerCKATool.exe load
-
-                  # Find certificate
-                  $CodeSigningCert = Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert | Select-Object -First 1
-                  echo Certificate: $CodeSigningCert
-
-                  # Extract thumbprint and subject name
-                  $Thumbprint = $CodeSigningCert.Thumbprint
-                  $SubjectName = ($CodeSigningCert.Subject -replace ", ?", "`n" | ConvertFrom-StringData).CN
-                  echo "config-args=--signtool-thumbprint '$Thumbprint' --signtool-subject-name '$SubjectName'" >> $env:GITHUB_OUTPUT
-              env:
-                  INSTALL_DIR: C:\Users\runneradmin\eSignerCKA
-                  MASTER_KEY_FILE: C:\Users\runneradmin\eSignerCKA\master.key
-
-            - name: "[Nightly] Resolve version"
-              id: nightly
-              if: inputs.version != ''
-              shell: bash
-              run: |
-                  echo "config-args=--nightly '${{ inputs.version }}'" >> $GITHUB_OUTPUT
-
             - name: Build App
               run: |
                   yarn ts-node scripts/generate-builder-config.ts ${{ steps.nightly.outputs.config-args }} ${{ steps.esigner.outputs.config-args }}
                   yarn build --publish never -w --config electron-builder.json ${{ steps.config.outputs.build-args }}
 
-            - name: Check app was signed successfully
-              if: false
-              run: |
-                  . "$env:SIGNTOOL_PATH" verify /pa (get-item ./dist/squirrel-windows*/*.exe)
-
             - name: Prepare artifacts for deployment
               if: inputs.deploy-mode
               shell: bash
               run: |
-                  mv dist _dist
-                  del _dist/*.exe
-                  mv _dist dist
-                  # mkdir -p "dist/install/win32/$DIR/msi" "dist/update/win32/$DIR"
-                  # mv _dist/squirrel-windows*/*.exe "dist/install/win32/$DIR"
-                  # mv _dist/squirrel-windows*/*.nupkg "dist/update/win32/$DIR/"
-                  # mv _dist/squirrel-windows*/RELEASES "dist/update/win32/$DIR/"
-                  # mv _dist/*.msi "dist/install/win32/$DIR/msi/"
+                  del dist/*.exe
               env:
                   DIR: ${{ steps.config.outputs.dir }}
-
-            # We don't wish to store the installer for every nightly ever, so we only keep the latest
-            - name: "[Nightly] Strip version from installer file"
-              if: inputs.deploy-mode && inputs.version != ''
-              shell: bash
-              run: |
-                  mv dist/install/win32/$DIR/*.exe "dist/install/win32/$DIR/Element Nightly Setup.exe"
-                  # mv dist/install/win32/$DIR/msi/*.msi "dist/install/win32/$DIR/msi/Element Nightly Setup.msi"
-              env:
-                  DIR: ${{ steps.config.outputs.dir }}
-
-            - name: "[Release] Prepare release latest symlink"
-              if: inputs.deploy-mode && inputs.version == ''
-              shell: bash
-              run: |
-                  ln -s "$(find . -type f -iname "*.exe" | xargs -0 -n1 -- basename)" "Element Setup.exe"
-              working-directory: "dist/install/win32/${{ steps.config.outputs.dir }}"
 
             - name: Upload Artifacts
               uses: actions/upload-artifact@v3
