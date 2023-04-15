@@ -118,8 +118,11 @@ jobs:
               if: inputs.deploy-mode
               shell: bash
               run: |
-                  # rm dist/*.exe
-                  ls dist
+                  mv dist _dist
+                  mkdir -p "dist/install/win32/$DIR/msi" "dist/update/win32/$DIR"
+                  mv _dist/squirrel-windows*/*.exe "dist/install/win32/$DIR"
+                  mv _dist/squirrel-windows*/*.nupkg "dist/update/win32/$DIR/"
+                  mv _dist/squirrel-windows*/RELEASES "dist/update/win32/$DIR/"
               env:
                   DIR: ${{ steps.config.outputs.dir }}
 
