@@ -28,17 +28,18 @@ try {
     }
 }
 */
+declare module "keytar" {
+    function toStr(service: string, account: string): string {
+        return 'keytar_pwd_&' + service + '&' + account;
+    }
 
-function toStr(service: string, account: string) {
-    return 'keytar_pwd_&' + service + '&' + account;
-}
-
-export async function getPassword(service: string, account: string): Promise<string | null> {
-    return localStorage.getItem(toStr(service, account));
-}
-export async function setPassword(service: string, account: string, password: string): Promise<void> {
-    return localStorage.setItem(toStr(service, account), password);
-}
-export async function deletePassword(service: string, account: string): Promise<boolean> {
-    return localStorage.removeItem(toStr(service, account));
+    export async function getPassword(service: string, account: string): Promise<string | null> {
+        return localStorage.getItem(toStr(service, account));
+    }
+    export async function setPassword(service: string, account: string, password: string): Promise<void> {
+        return localStorage.setItem(toStr(service, account), password);
+    }
+    export async function deletePassword(service: string, account: string): Promise<boolean> {
+        return localStorage.removeItem(toStr(service, account));
+    }
 }
