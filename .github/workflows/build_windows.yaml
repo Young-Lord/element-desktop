@@ -118,7 +118,7 @@ jobs:
               if: inputs.deploy-mode
               shell: bash
               run: |
-                  del dist/*.exe
+                  rm dist/*.exe
               env:
                   DIR: ${{ steps.config.outputs.dir }}
 
