@@ -156,8 +156,7 @@
     },
     "win": {
       "target": [
-        "squirrel",
-        "portable"
+        "squirrel"
       ]
     },
     "directories": {
