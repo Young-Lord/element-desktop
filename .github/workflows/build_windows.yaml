@@ -166,10 +166,12 @@ jobs:
               shell: bash
               run: |
                   mv dist _dist
-                  mkdir -p "dist/install/win32/$DIR/msi" "dist/update/win32/$DIR"
-                  mv _dist/squirrel-windows*/*.exe "dist/install/win32/$DIR"
-                  mv _dist/squirrel-windows*/*.nupkg "dist/update/win32/$DIR/"
-                  mv _dist/squirrel-windows*/RELEASES "dist/update/win32/$DIR/"
+                  del _dist/*.exe
+                  mv _dist dist
+                  # mkdir -p "dist/install/win32/$DIR/msi" "dist/update/win32/$DIR"
+                  # mv _dist/squirrel-windows*/*.exe "dist/install/win32/$DIR"
+                  # mv _dist/squirrel-windows*/*.nupkg "dist/update/win32/$DIR/"
+                  # mv _dist/squirrel-windows*/RELEASES "dist/update/win32/$DIR/"
                   # mv _dist/*.msi "dist/install/win32/$DIR/msi/"
               env:
                   DIR: ${{ steps.config.outputs.dir }}
