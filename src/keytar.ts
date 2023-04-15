@@ -40,7 +40,8 @@ const keytar = {
         return localStorage.setItem(toStr(service, account), password);
     },
     deletePassword: async function (service: string, account: string): Promise<boolean> {
-        return localStorage.removeItem(toStr(service, account));
+        localStorage.removeItem(toStr(service, account));
+        return true;
     }
 }
 
