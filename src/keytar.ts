@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type * as Keytar from "keytar"; // Hak dependency type
+/*import type * as Keytar from "keytar"; // Hak dependency type
 
 let keytar: typeof Keytar | undefined;
 try {
@@ -27,5 +27,18 @@ try {
         console.warn("Keytar unexpected error:", e);
     }
 }
+*/
 
-export { keytar };
+function toStr(service: string, account: string) {
+    return 'keytar_pwd_&' + service + '&' + account;
+}
+
+export async function getPassword(service: string, account: string): Promise<string | null> {
+    return localStorage.getItem(toStr(service, account));
+}
+export async function setPassword(service: string, account: string, password: string): Promise<void> {
+    return localStorage.setItem(toStr(service, account), password);
+}
+export async function deletePassword(service: string, account: string): Promise<boolean> {
+    return localStorage.removeItem(toStr(service, account));
+}
