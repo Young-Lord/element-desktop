@@ -119,9 +119,13 @@ jobs:
               shell: bash
               run: |
                   mv dist _dist
+                  mkdir actions_upload
                   mkdir -p "dist/install/win32/$DIR/msi" "dist/update/win32/$DIR"
+                  cp _dist/squirrel-windows*/*.exe actions_upload
                   mv _dist/squirrel-windows*/*.exe "dist/install/win32/$DIR"
+                  cp _dist/squirrel-windows*/*.nupkg actions_upload
                   mv _dist/squirrel-windows*/*.nupkg "dist/update/win32/$DIR/"
+                  cp _dist/squirrel-windows*/RELEASES actions_upload
                   mv _dist/squirrel-windows*/RELEASES "dist/update/win32/$DIR/"
               env:
                   DIR: ${{ steps.config.outputs.dir }}
