@@ -143,4 +143,4 @@ jobs:
                   prerelease: false
                   automatic_release_tag: latest
                   files: |
-                      dist/*.exe
+                      actions_upload/*
