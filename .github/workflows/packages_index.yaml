@@ -1,18 +1,5 @@
 name: Generate packages.element.io directory indexes
 on:
-    # Trigger a rebuild of all indexes if the template gets updated
-    push:
-        branches: [develop]
-        paths:
-            - "packages.element.io/**"
-    # Trigger a daily rebuild for (mac-mini built) Nightly builds
-    schedule:
-        - cron: "0 11 * * *"
-    # Trigger after Nightly builds are deployed
-    workflow_run:
-        workflows: ["Build and Deploy"]
-        types:
-            - completed
     # Manual trigger for rebuilding for releases
     workflow_dispatch: {}
 jobs:
