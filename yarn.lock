@@ -4026,6 +4026,11 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
+commander@^2.9.0:
+  version "2.20.3"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
+  integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+
 commander@^5.0.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
@@ -4368,6 +4373,14 @@ ejs@^3.1.8:
   integrity sha512-/sXZeMlhS0ArkfX2Aw780gJzXSMPnKjtspYZv+f3NiKLlubezAHDU5+9xz6gd3/NhG3txQCo6xlglmTS+oTGEQ==
   dependencies:
     jake "^10.8.5"
+
+electron-build-env@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/electron-build-env/-/electron-build-env-0.2.0.tgz#5649ee3e5fd006e267086caa945b77a1fa220b92"
+  integrity sha512-L431TbXtXe6iw3ko7ITr/qCu+jumVKLAhCDyhqfab6421LGlawVcT88Ws/DHR57+1lkLN1POQqwNOkjPwQJQmQ==
+  dependencies:
+    commander "^2.9.0"
+    mkdirp "^0.5.1"
 
 electron-builder-squirrel-windows@24.0.0:
   version "24.0.0"
@@ -6577,6 +6590,11 @@ matcher@^3.0.0:
   integrity sha512-OkeDaAZ/bQCxeFAozM55PKcKU0yJMPGifLwV4Qgjitu+5MoAfSQN4lsLJeXZ1b8w0x+/Emda6MZgXS1jvsapng==
   dependencies:
     escape-string-regexp "^4.0.0"
+
+matrix-seshat@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/matrix-seshat/-/matrix-seshat-3.0.1.tgz#f523ddc1c23cb8cc434509ec7d49770bdaf53330"
+  integrity sha512-fkcUydhDP3nl0oajH8j/Hk1QSkQpar5V9rTaljxYpn7rD5wjqK2gXew49BJym1rvjuYsIrU0k+UNEUVFXQ5IGA==
 
 matrix-web-i18n@^1.3.0:
   version "1.3.0"
